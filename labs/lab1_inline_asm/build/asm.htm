@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\build\asm.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\build\asm.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Sep 16 19:07:09 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Sep 16 19:31:07 2019
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -22,6 +22,8 @@ Mutually Recursive functions
  <LI><a href="#[12]">SysTick_Handler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[12]">SysTick_Handler</a><BR>
  <LI><a href="#[25]">ADC_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[25]">ADC_IRQHandler</a><BR>
  <LI><a href="#[53]">my_downcase</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[53]">my_downcase</a><BR>
+ <LI><a href="#[52]">my_capitalize</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[52]">my_capitalize</a><BR>
+ <LI><a href="#[51]">my_strcpy</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[51]">my_strcpy</a><BR>
 </UL>
 <P>
 <H3>
@@ -129,16 +131,18 @@ Global Symbols
 
 <P><STRONG><a name="[76]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
-<P><STRONG><a name="[51]"></a>my_strcpy</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, main.o(.emb_text), UNUSED)
+<P><STRONG><a name="[51]"></a>my_strcpy</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, main.o(.emb_text))
 <BR><BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_strcpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_strcpy
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[52]"></a>my_capitalize</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(.emb_text), UNUSED)
+<P><STRONG><a name="[52]"></a>my_capitalize</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(.emb_text))
 <BR><BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_capitalize
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_capitalize
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
 <P><STRONG><a name="[53]"></a>my_downcase</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, main.o(.emb_text))
@@ -152,11 +156,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[54]"></a>$Super$$main</STRONG> (Thumb, 180 bytes, Stack size 128 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = $Super$$main &rArr; __aeabi_memcpy4
+<P><STRONG><a name="[54]"></a>$Super$$main</STRONG> (Thumb, 200 bytes, Stack size 168 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = $Super$$main &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_first_last_cap
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_downcase
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_capitalize
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_strcpy
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -429,7 +435,7 @@ Global Symbols
 <P><STRONG><a name="[7b]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4b]"></a>main</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, retarget.o(i.$Sub$$main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = main &rArr; $Super$$main &rArr; __aeabi_memcpy4
+<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = main &rArr; $Super$$main &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_main
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
