@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\build\asm.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\build\asm.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Sep 16 19:31:07 2019
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Sep 18 14:40:54 2019
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -152,12 +152,12 @@ Global Symbols
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[56]"></a>my_first_last_cap</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, main.o(.emb_text))
+<P><STRONG><a name="[56]"></a>my_first_last_cap</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, main.o(.emb_text))
 <BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main
 </UL>
 
-<P><STRONG><a name="[54]"></a>$Super$$main</STRONG> (Thumb, 200 bytes, Stack size 168 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = $Super$$main &rArr; __aeabi_memcpy4
+<P><STRONG><a name="[54]"></a>$Super$$main</STRONG> (Thumb, 218 bytes, Stack size 192 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = $Super$$main &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_first_last_cap
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_downcase
@@ -435,7 +435,7 @@ Global Symbols
 <P><STRONG><a name="[7b]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4b]"></a>main</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, retarget.o(i.$Sub$$main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = main &rArr; $Super$$main &rArr; __aeabi_memcpy4
+<BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = main &rArr; $Super$$main &rArr; __aeabi_memcpy4
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mbed_main
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;$Super$$main

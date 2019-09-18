@@ -48,46 +48,92 @@ down_skip
 }
 
 __asm void my_first_last_cap(char *str){	
-		; Make sure that the first byte is not the null terminator, otherwise do nothing.
+// r0 contains the current pointer to the str
+// r1 contains the dereferenced value of r0
+// r2 contains the memory address of the first element in str
+	
+		MOV r2, r0
+	
+		// If we've reached the end of the string. Jump to the third loop in this case.
+fl_first_loop
 		LDRB r1, [r0]
 		CMP r1, #0
-		BEQ fl_cap_end
+		BEQ fl_third_loop
+
+		// If the char is a lowercase letter, uppercase it and go to the second loop.
+		// Otherwise, increment the pointer and go back to the first loop.
+		CMP r1, #'a'-1 
+		BLS fl_first_loop_increment
+		CMP r1, #'z' 
+		BHI fl_first_loop_increment
+
+		B fl_first_loop_uppercase
 	
-		; Now if we are here, then that means that the first char is not '\0'.
-		; So now check to see if this byte is between 'a' and 'z'.
-fl_upper_case
-		CMP r1, #'a'-1
-		BLS fl_cap_skip
-		CMP r1, #'z'
-		BHI fl_cap_skip	
-		
-		; If the byte is a lower case ascii char, subtract 32 and store it back in its buffer.
-		SUBS r1,#32
-		STRB r1, [r0]
-		
-fl_cap_skip
-		; Get the current byte and the byte after the current byte.
-		LDRB r1, [r0]
-		LDRB r2, [r0, #1] 
-		; Was the next byte the null terminator?
-		CMP r2, #0
-		; If it was, then this is the last byte. Get it, uppercase it and end.
-		BEQ fl_upper_case2
-		; Otherwise, increment the string pointer and re-run this loop.
+		// Go directly to the second loop if we find an uppercase letter.
+		CMP r1, #'A'-1 
+		BLS  fl_first_loop_increment
+		CMP r1, #'Z' 
+		BHI  fl_first_loop_increment
+
+		B fl_second_loop
+	
+fl_first_loop_increment
 		ADDS r0, r0, #1
-		B fl_cap_skip		
-		
-fl_upper_case2
-		CMP r1, #'a'-1
-		BLS fl_cap_end
-		CMP r1, #'z'
-		BHI fl_cap_end	
-		
-		; If the byte is a lower case ascii char, subtract 32 and store it back in its buffer.
+		B fl_first_loop
+	
+	
+fl_first_loop_uppercase
 		SUBS r1,#32
 		STRB r1, [r0]		
+		
+
+// In the second loop, find the end of the string (null terminator).
+fl_second_loop
+		LDRB r1, [r0]
+		CMP r1, #0
+		BEQ fl_third_loop
+		
+		ADDS r0, r0, #1
+		B fl_second_loop
+		
+
 	
-fl_cap_end
+// The third loop is exactly like the first loop, except in reverse.
+// And instead of stopping on null terminator, we stop on the value in r2.
+fl_third_loop
+		CMP r0, r2
+		BEQ fl_end
+		LDRB r1, [r0]
+
+
+		// If the char is a lowercase letter, uppercase it and go to the second loop.
+		// Otherwise, increment the pointer and go back to the first loop.
+		CMP r1, #'a'-1 
+		BLS fl_third_loop_increment
+		CMP r1, #'z' 
+		BHI fl_third_loop_increment
+
+		B fl_third_loop_uppercase
+	
+		// Go directly to the second loop if we find an uppercase letter.
+		CMP r1, #'A'-1 
+		BLS  fl_third_loop_increment
+		CMP r1, #'Z' 
+		BHI  fl_third_loop_increment
+
+		B fl_end
+	
+fl_third_loop_increment
+		SUBS r0, r0, #1
+		B fl_third_loop
+	
+	
+fl_third_loop_uppercase
+		SUBS r1,#32
+		STRB r1, [r0]	
+	
+fl_end	
+	
 		BX lr
 }
 
@@ -109,14 +155,14 @@ int main(void){
 	char test1[] = "hello world";
 	char test2[] = "HELLO WORLD!";
 	char test3[] = "hElLo WoRlD!";
-	char test4[] = "";
+	char test4[] = "1H2E3L4L5O";
 	char test5[] = "!@#$%^&*()=+[]{};':\",.<>/?";
 
 	char test6[] = "a123 ()*& xyz";
 	char test7[] = "12345";
-	char test8[] = "";
+	char test8[] = "123h456e789";
 	char test9[] = "K{[])90t";
-	char test10[] = "aaaaaaaaa";
+	char test10[] = "123aaa33aa333aa33aa321";
 	
 	my_downcase(test1);
 	my_downcase(test2);
