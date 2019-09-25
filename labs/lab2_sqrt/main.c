@@ -79,7 +79,8 @@ my_sqrt_end
 int main(void){
 	volatile int r, j=0;
 	int i;
-  r = my_sqrt(1);     // should be 0
+  r = my_sqrt(0);     // should be 0
+	r = my_sqrt(1);     // should be 1
   r = my_sqrt(25);    // should be 5
 	r = my_sqrt(133); 	// should be 11
   for (i=0; i<10000; ++i){
