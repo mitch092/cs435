@@ -18,8 +18,8 @@ __asm unsigned int my_sqrt(unsigned int x){
 	// the registers that I am allowed to use are
 	// r4 to r11. They must be saved before I use them 
 	// and restored after I'm done using them.
-	// I'm not using r11, so ignore it.
-	PUSH {r4-r10}	
+	// I'm not using r10 or r11, so ignore them.
+	PUSH {r4-r9}	
 	
 	// r4 contains x
 	// r5 contains a
@@ -27,7 +27,6 @@ __asm unsigned int my_sqrt(unsigned int x){
 	// r7 contains c
 	// r8 contains c_old
 	// r9 contains c_squared
-	// r10 is used to store 2 for the division.	
 	
 	// There is only one argument for this subroutine.
 	// Move it into the first register that I am allowed to use,
@@ -46,10 +45,10 @@ my_sqrt_loop
   MOV r8, r7
 	// c = a+b
 	ADD r7, r5, r6
-	// c = c/2; must store the 2 in a register 
-	// because immediates are not allowed for UDIV.
-	MOV r10, #2
-	UDIV r7, r7, r10
+	// c = c/2;
+	// Shifting right by 1 bit is
+	// equivalent to dividing by 2.
+	LSR r7, r7, #1
 	// c_squared = c * c
 	MUL r9, r7, r7
 	// Set the conditional flags
@@ -68,8 +67,8 @@ my_sqrt_loop
 my_sqrt_end
   // Move c into the return register r0.
 	MOV r0, r7
-	// Restore r4-r10.
-	POP {r4-r10}
+	// Restore r4-r9.
+	POP {r4-r9}
 	// Return.
 	BX lr;
 }
@@ -81,6 +80,7 @@ int main(void){
 	volatile int r, j=0;
 	int i;
   r = my_sqrt(0);     // should be 0
+	r = my_sqrt(1);     // should be 1
   r = my_sqrt(25);    // should be 5
 	r = my_sqrt(133); 	// should be 11
   for (i=0; i<10000; ++i){
