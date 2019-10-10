@@ -18,9 +18,109 @@ PROGRAMMING USING MBED API
 
 //Define input bus
 	//Write your code here
+	
+	// Buttons: 4, 3, 2, 1
+	BusIn switches(PA_10, PB_3, PB_5, PB_4);
+
+  // Map the name of the switch to its location in the bus.
+	enum Button {
+		button1 = 0,
+		button2 = 1,
+		button3 = 2,
+		button4 = 3
+	};
+	
+	// Read the individual bit in the bus.
+	bool button_pressed(Button button){
+		return (((switches.read() >> button) & 1) == 0);
+	}
 
 //Define output bus for the RGB LED
 	//Write your code here
+	
+	// LEDs: blue, green, red
+	BusOut LED(PB_10, PA_8, PA_9);
+	
+	// Map the name of the output LED to its location in the bus.
+	enum Color {
+		red   = 0,
+		green = 1,
+		blue  = 2
+	};
+	
+	// Toggle the individual bit for an led, in the bus.
+	void toggle_led(Color color){
+		LED = LED ^ (1 << color);
+	}
+	void toggle_led_all(){
+		toggle_led(red);
+		toggle_led(green);
+		toggle_led(blue);
+	}
+	
+	void part1(){
+		  for(;;){		
+		  //Check which button was pressed and light up the corresponding LEDs
+		  //Write your code here
+		  if (button_pressed(button1)){
+			  toggle_led(red);
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button2)){
+			  toggle_led(green);
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button3)){
+			  toggle_led(blue);
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button4)){
+			  toggle_led_all();
+			  wait(0.5);		
+		  }
+	  }
+  }
+	
+	void part2(){
+		char r = 0, g = 0, b = 0, a = 0;
+		
+		for(;;){		
+		  if (button_pressed(button1)){
+			  ++r;
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button2)){
+			  ++g;
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button3)){
+			  ++b;
+			  wait(0.5);		
+		  }
+		  if (button_pressed(button4)){
+			  ++a;
+			  wait(0.5);		
+		  }
+			
+			if(r == 10){
+				r = 0;
+				toggle_led(red);
+			}
+			if(g == 10){
+				g = 0;
+				toggle_led(green);
+			}
+			if(b == 10){
+				b = 0;
+				toggle_led(blue);
+			}
+			if(a == 10){
+				a = 0;
+				toggle_led_all();
+			}
+	  }
+	}
+	
 
 
 /*----------------------------------------------------------------------------
@@ -28,13 +128,7 @@ PROGRAMMING USING MBED API
  *----------------------------------------------------------------------------*/
 
 int main(){
-	
-	while(1){
-		
-		//Check which button was pressed and light up the corresponding LEDs
-		//Write your code here
-		
-	}
+	part2();
 }
 
 // *******************************ARM University Program Copyright (c) ARM Ltd 2016*************************************
