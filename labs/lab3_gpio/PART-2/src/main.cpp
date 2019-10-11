@@ -30,10 +30,36 @@ PROGRAMMING USING MBED API
 		button4 = 3
 	};
 	
-	// Read the individual bit in the bus.
 	bool button_pressed(Button button){
 		return (((switches.read() >> button) & 1) == 0);
 	}
+	
+	class ButtonFSM{
+		public:
+		ButtonFSM() : last_press(false){}
+		bool operator()(Button button){
+			// Read the individual bit in the bus.
+			bool pressed = button_pressed(button);			
+			
+			if(last_press == true){
+				if(pressed == true){
+           last_press = false;
+				} else {
+					last_press = false;
+				}
+			} else {
+				if(pressed == true){
+					last_press = true;
+				} else {
+					last_press = false;
+				}
+			}
+			return last_press;			
+		}
+		
+		private:
+			bool last_press;
+	};
 
 //Define output bus for the RGB LED
 	//Write your code here
@@ -58,65 +84,74 @@ PROGRAMMING USING MBED API
 		toggle_led(blue);
 	}
 	
-	void part1(){
-		  for(;;){		
+	/*void part1(){
+		
+		//ButtonFSM fsm1, fsm2, fsm3, fsm4;
+
+		for(;;){		
 		  //Check which button was pressed and light up the corresponding LEDs
 		  //Write your code here
 		  if (button_pressed(button1)){
 			  toggle_led(red);
-			  wait(0.5);		
+				wait(0.25);
 		  }
 		  if (button_pressed(button2)){
 			  toggle_led(green);
-			  wait(0.5);		
+					wait(0.25);
 		  }
 		  if (button_pressed(button3)){
 			  toggle_led(blue);
-			  wait(0.5);		
+					wait(0.25);
 		  }
 		  if (button_pressed(button4)){
 			  toggle_led_all();
-			  wait(0.5);		
+					wait(0.25);
 		  }
 	  }
-  }
+  }*/
 	
 	void part2(){
-		char r = 0, g = 0, b = 0, a = 0;
+		int r = 0, g = 0, b = 0, a = 0;
+		//ButtonFSM fsm1, fsm2, fsm3, fsm4;
 		
 		for(;;){		
 		  if (button_pressed(button1)){
 			  ++r;
-			  wait(0.5);		
+				wait(0.25);
 		  }
-		  if (button_pressed(button2)){
-			  ++g;
-			  wait(0.5);		
+		  else if (button_pressed(button2)){
+			  ++g;				
+				wait(0.25);
 		  }
-		  if (button_pressed(button3)){
-			  ++b;
-			  wait(0.5);		
+		  else if (button_pressed(button3)){
+			  ++b;				
+				wait(0.25);
 		  }
-		  if (button_pressed(button4)){
+		  else if (button_pressed(button4)){
 			  ++a;
-			  wait(0.5);		
+   			wait(0.25);
+
 		  }
 			
 			if(r == 10){
 				r = 0;
 				toggle_led(red);
+				wait(0.25);
 			}
 			if(g == 10){
 				g = 0;
-				toggle_led(green);
+			  toggle_led(green);
+				wait(0.25);
 			}
 			if(b == 10){
 				b = 0;
 				toggle_led(blue);
+				wait(0.25);
 			}
 			if(a == 10){
 				a = 0;
 				toggle_led_all();
+				wait(0.25);
 			}
 	  }
 	}
