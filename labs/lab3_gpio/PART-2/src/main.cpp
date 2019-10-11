@@ -33,33 +33,9 @@ PROGRAMMING USING MBED API
 	bool button_pressed(Button button){
 		return (((switches.read() >> button) & 1) == 0);
 	}
-	
-	class ButtonFSM{
-		public:
-		ButtonFSM() : last_press(false){}
-		bool operator()(Button button){
-			// Read the individual bit in the bus.
-			bool pressed = button_pressed(button);			
-			
-			if(last_press == true){
-				if(pressed == true){
-           last_press = false;
-				} else {
-					last_press = false;
-				}
-			} else {
-				if(pressed == true){
-					last_press = true;
-				} else {
-					last_press = false;
-				}
-			}
-			return last_press;			
-		}
-		
-		private:
-			bool last_press;
-	};
+	bool button_pressed(int button){
+		return (((switches.read() >> button) & 1) == 0);
+	}
 
 //Define output bus for the RGB LED
 	//Write your code here
@@ -71,11 +47,15 @@ PROGRAMMING USING MBED API
 	enum Color {
 		red   = 0,
 		green = 1,
-		blue  = 2
+		blue  = 2,
+		all = 3
 	};
 	
 	// Toggle the individual bit for an led, in the bus.
 	void toggle_led(Color color){
+		LED = LED ^ (1 << color);
+	}
+	void toggle_led(int color){
 		LED = LED ^ (1 << color);
 	}
 	void toggle_led_all(){
@@ -84,7 +64,12 @@ PROGRAMMING USING MBED API
 		toggle_led(blue);
 	}
 	
-	/*void part1(){
+	void toggle_led2(int color){
+		if(color == 3) toggle_led_all();
+		else toggle_led(color);
+	}
+	
+	void part1(){
 		
 		//ButtonFSM fsm1, fsm2, fsm3, fsm4;
 
@@ -108,51 +93,28 @@ PROGRAMMING USING MBED API
 					wait(0.25);
 		  }
 	  }
-  }*/
+  }
 	
 	void part2(){
-		int r = 0, g = 0, b = 0, a = 0;
-		//ButtonFSM fsm1, fsm2, fsm3, fsm4;
+		//int r = 0, g = 0, b = 0, a = 0;
+		bool last_pressed[] = {false, false, false, false};
+		int counters[] = {0, 0, 0, 0};
 		
-		for(;;){		
-		  if (button_pressed(button1)){
-			  ++r;
-				wait(0.25);
-		  }
-		  else if (button_pressed(button2)){
-			  ++g;				
-				wait(0.25);
-		  }
-		  else if (button_pressed(button3)){
-			  ++b;				
-				wait(0.25);
-		  }
-		  else if (button_pressed(button4)){
-			  ++a;
-   			wait(0.25);
-
-		  }
-			
-			if(r == 10){
-				r = 0;
-				toggle_led(red);
-				wait(0.25);
-			}
-			if(g == 10){
-				g = 0;
-			  toggle_led(green);
-				wait(0.25);
-			}
-			if(b == 10){
-				b = 0;
-				toggle_led(blue);
-				wait(0.25);
-			}
-			if(a == 10){
-				a = 0;
-				toggle_led_all();
-				wait(0.25);
-			}
+		for(;;){					
+			for(int i = 0; i != 4; ++i){
+			  if(last_pressed[i] == false && button_pressed(i) == true){
+					counters[i]++;
+				  last_pressed[i] = true;
+				  wait(0.10);
+			  }
+			  if(button_pressed(i) == false){
+				  last_pressed[i] = false;
+			  }
+				if(counters[i] == 10){
+				  counters[i] = 0;
+				  toggle_led2(i);
+			  }
+			}			
 	  }
 	}
 	
@@ -163,6 +125,7 @@ PROGRAMMING USING MBED API
  *----------------------------------------------------------------------------*/
 
 int main(){
+	//part1();
 	part2();
 }
 
