@@ -1,0 +1,2 @@
+none	1v/div	10ms/div
+run on highest volume, highest frequency.s

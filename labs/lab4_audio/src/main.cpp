@@ -45,7 +45,7 @@ float fix_bottom_bounds_on_pot(float in, float offset){
 
 int main(){
 	float i, pot1_current, pot1_last, pot2_current;
-	pot1_current = pot1_last = fix_bottom_bounds_on_pot(pot1.read(), BOTTOM_OFFSET);	
+	pot1_current = pot1_last = fix_bottom_bounds_on_pot(pot1.read(), BOTTOM_OFFSET);
 		
 	for(;;){	  
 		/*
@@ -71,11 +71,13 @@ int main(){
 		// I also chop the duty cycle's increment step into the highest possible value
 		// for this particular CPU, which is running at 84 megahertz. I'm not sure,
 		// but I'm hoping that the PWM pin is in fact able to update that many times per second.
+		//for(i = 0.0f; i < (0.5f * pot2_current); i += (RESOLUTION * pot2_current * 0.5f)){
 		for(i = 0.0f; i < (1.0f * pot2_current); i += (RESOLUTION * pot2_current)){
+
 			// Sawtooth:
 			out = i; 
 			// Sine (just to hear what it sounds like):
-			//out = (sinf(6.28318530718f * i) + 1)/2.0f;
+			//out = ((sinf(6.28318530718f * i) + 1)/2.0f);
 	  }
 	}	
 }
